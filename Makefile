@@ -5,6 +5,8 @@ PROGPART=t85
 
 #21800000UL for Ch7, 3rd.
 #61.25/2 = 30.625 nom.
+
+# -DF_CPU=30625000UL
 CFLAGS=-g -Wall -Os -mmcu=$(PART) -DF_CPU=30625000UL
 ASFLAGS:=$(CFLAGS)
 CC=avr-gcc
@@ -20,7 +22,7 @@ test.lst : test.c
 	avr-gcc -c -g -Wa,-a,-ad $(CFLAGS) $^ > $@
 
 burn : test.hex
-	avrdude -c usbtiny -p $(PROGPART) -V -U flash:w:test.hex
+	avrdude -c stk500v1 -p $(PROGPART) -V -U flash:w:test.hex -P /dev/cu.usb* -b 19200
 
 #For PLL
 burnfuses :
